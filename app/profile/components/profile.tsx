@@ -1,33 +1,9 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-} from "@/components/ui/form";
-import { Icons } from "@/components/ui/icons";
-import { Input } from "@/components/ui/input";
-import { createClientSupabase } from "@/utils/supabase/client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Image from "next/image";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { EducationItem, ExperienceItem } from "@/types";
 import { ViewProfileProps } from "@/types";
 import Badge from "@/components/badge";
-import { Item } from "@radix-ui/react-select";
 import dateToMonthYear from "@/utils/dateHelpers";
 import Link from "next/link";
 

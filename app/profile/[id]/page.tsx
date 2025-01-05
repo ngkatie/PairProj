@@ -1,10 +1,6 @@
 import { ViewProfile } from "../components/profile";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import Sidebar from "../../../components/sidebar";
 import { Suspense } from "react";
-import { ViewProfileProps } from "@/types/profile-items";
-import delayedProp from "../../../utils/delayedProp";
 import { auth } from "@/db/auth";
 import { getViewProfileProps } from "../../actions/user";
 import { notFound } from "next/navigation";
