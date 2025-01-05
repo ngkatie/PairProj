@@ -1,5 +1,4 @@
 "use client";
-import Sidebar from "@/components/sidebar";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -14,6 +13,7 @@ import { useState, useMemo } from "react";
 import skillIcons from "@/components/skillIcons";
 import { FilterObject, useFilters } from "../FiltersContext";
 import Link from "next/link";
+import { routes } from "@/routes/routes";
 
 interface Project {
 	id: number;
@@ -356,7 +356,9 @@ export default function ProjectCard() {
 						</div>
 					</CardContent>
 					<CardFooter className="mt-auto justify-end">
-						<Link href={`/projects/details/${project.id}`}>
+						<Link
+							href={routes.projects.project({ id: project.id })}
+						>
 							<Button size="icon" variant="ghost">
 								<Image
 									alt="View Project"

@@ -1,39 +1,14 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-} from "@/components/ui/form";
-import { Icons } from "@/components/ui/icons";
-import { Input } from "@/components/ui/input";
-import { createClientSupabase } from "@/utils/supabase/client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Image from "next/image";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { EducationItem, ExperienceItem } from "@/types";
 import { ViewProfileProps } from "@/types";
 import Badge from "@/components/badge";
-import { Item } from "@radix-ui/react-select";
 import dateToMonthYear from "@/utils/dateHelpers";
 import Link from "next/link";
+import { routes } from "@/routes/routes";
 
 export function ViewProfile({ profile }: { profile: ViewProfileProps }) {
-	//TODO: replace instances of SampleUserProfile with the profile prop when we have the backend set up
-
 	return (
 		<div>
 			<Card className="mb-8 flex items-center space-x-8 space-y-1 p-4">
@@ -171,7 +146,9 @@ export function ViewProfile({ profile }: { profile: ViewProfileProps }) {
 									className="mr-8 w-full rounded-lg border border-black p-6"
 								>
 									<Link
-										href={`/project/${project.id}`}
+										href={routes.projects.project({
+											id: project.id,
+										})}
 										className="group flex cursor-pointer flex-row"
 									>
 										<Image

@@ -1,11 +1,13 @@
 import React from "react";
+
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import { Input } from "./ui/input";
 import { Url } from "next/dist/shared/lib/router/router";
+
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { formatDistanceToNow } from "date-fns";
+
+import { routes } from "@/routes/routes";
 
 type NavBarProps = {
 	user: {
@@ -126,7 +128,7 @@ const Sidebar = () => {
 				<Divider />
 				<div className="flex flex-col items-start px-4">
 					<MenuItem
-						link="/projects/search"
+						link={routes.projects.search()}
 						name="Search Projects"
 						icon="/icons/search-light.svg"
 					/>
