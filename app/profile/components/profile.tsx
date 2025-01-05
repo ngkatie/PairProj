@@ -6,10 +6,9 @@ import { ViewProfileProps } from "@/types";
 import Badge from "@/components/badge";
 import dateToMonthYear from "@/utils/dateHelpers";
 import Link from "next/link";
+import { routes } from "@/routes/routes";
 
 export function ViewProfile({ profile }: { profile: ViewProfileProps }) {
-	//TODO: replace instances of SampleUserProfile with the profile prop when we have the backend set up
-
 	return (
 		<div>
 			<Card className="mb-8 flex items-center space-x-8 space-y-1 p-4">
@@ -147,7 +146,9 @@ export function ViewProfile({ profile }: { profile: ViewProfileProps }) {
 									className="mr-8 w-full rounded-lg border border-black p-6"
 								>
 									<Link
-										href={`/project/${project.id}`}
+										href={routes.projects.project({
+											id: project.id,
+										})}
 										className="group flex cursor-pointer flex-row"
 									>
 										<Image
