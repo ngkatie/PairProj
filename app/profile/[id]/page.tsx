@@ -1,4 +1,4 @@
-import { ViewProfile } from "../components/view-profile";
+import { ViewProfile } from "../components/profile";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Sidebar from "../../../components/sidebar";
