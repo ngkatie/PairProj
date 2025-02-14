@@ -66,22 +66,18 @@ function QuillEditor({ yText, provider }: EditorProps) {
   }, [yText, provider]);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.editorContainer}>
-        <ReactQuill
-          className={styles.editor}
-          placeholder="Start typing here…"
-          ref={reactQuillRef}
-          theme="snow"
-          modules={{
-            toolbar: false,
-            history: {
-              // Local undo shouldn't undo changes from remote users
-              userOnly: true,
-            },
-          }}
-        />
-      </div>
+    <div className="container bg-white dark:bg-black rounded-md p-4">
+      <ReactQuill
+        className="editor text-black dark:text-white"
+        placeholder="Start typing here…"
+        ref={reactQuillRef}
+        theme="snow"
+        modules={{
+          toolbar: false,
+          history: { userOnly: true },
+        }}
+      />
     </div>
   );
+  
 }
