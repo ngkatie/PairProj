@@ -11,25 +11,49 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./components/Editor.module.css";
 
 // Collaborative text editor with simple rich text, live cursors, and live avatars
+type DataProp = {
+  data: string|undefined;
+}
+
 Quill.register("modules/cursors", QuillCursors);
-export function CollaborativeEditor() {
+export function CollaborativeEditor ({ data }: DataProp) {
   const room = useRoom();
+  const [doc, setDoc] = useState<Y.Doc>();
   const [text, setText] = useState<Y.Text>();
   const [provider, setProvider] = useState<any>();
+  
+  
 
   // Set up Liveblocks Yjs provider
   useEffect(() => {
     const yDoc = new Y.Doc();
     const yText = yDoc.getText("quill");
     const yProvider = new LiveblocksYjsProvider(room, yDoc);
+    setDoc(yDoc);
     setText(yText);
     setProvider(yProvider);
 
+    
     return () => {
       yDoc?.destroy();
       yProvider?.destroy();
     };
   }, [room]);
+
+  useEffect(() => {
+    console.log('recieved data in editor');
+    console.log(data);
+    if (data != undefined){
+      //const yText = new Y.Text(data)
+      
+      console.log('setting text')
+      text?.delete(0, text.length)
+      text?.insert(0, data);
+      //setText(yText);
+    }
+    
+  }, [data]);
+
 
   if (!text || !provider) {
     return null;
@@ -41,6 +65,7 @@ export function CollaborativeEditor() {
 type EditorProps = {
   yText: Y.Text;
   provider: any;
+  
 };
 
 function QuillEditor({ yText, provider }: EditorProps) {
