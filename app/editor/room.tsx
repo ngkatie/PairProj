@@ -7,11 +7,13 @@ import {
   ClientSideSuspense,
 } from "@liveblocks/react/suspense";
 
+type RoomProps = {
+  children: ReactNode;
+  roomId: string;
+};
 
-
-export function Room({ children }: { children: ReactNode }) {
-    const roomId = "temp id";
-    return (
+export function Room({ children, roomId }: RoomProps) {
+  return (
     <LiveblocksProvider authEndpoint="/api/liveblocks-auth">
       <RoomProvider
       id={roomId}

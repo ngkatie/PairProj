@@ -2,6 +2,7 @@
 
 import { Room } from "./room.tsx";
 import { Button } from "@/components/ui/button";
+import ShareButton from "./components/share_button";
 import { CollaborativeEditor } from "./editor.tsx";
 import ThemeToggle from "./components/theme-switch.tsx";
 import Header from './components/header.tsx';
@@ -21,6 +22,7 @@ import {
 
 export default function Page() {
   const [fileData, setFileData] = useState<string>();
+  const roomId = "lets-collab";
   //const [dataFromChild, setDataFromChild] = useState("");
   function handleDataFromChild(data: string) {
     //setDataFromChild(data);
@@ -36,7 +38,11 @@ export default function Page() {
                     <ThemeToggle />
                 </div>
                 <div className="col-span-6 bg-white dark:bg-black text-black dark:text-white w-full flex-none justify-center p-6">
-                  <Room>
+                  <Room roomId={roomId}>
+                  <div className="flex justify-between items-center p-4">
+                    <h1 className="text-xl font-bold">Live Editor</h1>
+                    <ShareButton roomId={roomId} />
+                  </div>
                     <CollaborativeEditor data={fileData}/>
                   </Room>
                 </div>

@@ -11,4 +11,6 @@ export const routes = registerRoutes({
 		project: "/projects/:id",
 	},
 	editor: "/editor"
+	
+	
 });
