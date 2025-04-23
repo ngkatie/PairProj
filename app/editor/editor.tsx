@@ -6,7 +6,7 @@ import { QuillBinding } from "y-quill";
 import QuillCursors from "quill-cursors";
 import * as Y from "yjs";
 import { LiveblocksYjsProvider } from "@liveblocks/yjs";
-import { useRoom, useSelf } from "@liveblocks/react/suspense";
+import { useRoom, useSelf } from "@liveblocks/react";
 import { useEffect, useRef, useState } from "react";
 import styles from "./components/Editor.module.css";
 
@@ -15,17 +15,29 @@ type DataProp = {
   data: string|undefined;
 }
 
-Quill.register("modules/cursors", QuillCursors);
+// Register cursors module once
+if ((Quill as any).__cursors_registered !== true) {
+  Quill.register("modules/cursors", QuillCursors);
+  (Quill as any).__cursors_registered = true;
+}
+
 export function CollaborativeEditor ({ data }: DataProp) {
   const room = useRoom();
   const [doc, setDoc] = useState<Y.Doc>();
   const [text, setText] = useState<Y.Text>();
   const [provider, setProvider] = useState<any>();
+
+  if (!room) {
+    return null;
+  }
+  
   
   
 
   // Set up Liveblocks Yjs provider
   useEffect(() => {
+    if (!room) return;
+
     const yDoc = new Y.Doc();
     const yText = yDoc.getText("quill");
     const yProvider = new LiveblocksYjsProvider(room, yDoc);
@@ -72,20 +84,63 @@ function QuillEditor({ yText, provider }: EditorProps) {
   const reactQuillRef = useRef<ReactQuill>(null);
 
   // Set up Yjs and Quill
-  //const userInfo = useSelf((me) => me.info);
-  
+  const user = useSelf((me) => me.info);
+
+  // Set user info into awareness
   useEffect(() => {
-    let quill: ReturnType<ReactQuill["getEditor"]>;
-    let binding: QuillBinding;
+    if (user) {
+      provider.awareness.setLocalStateField("user", {
+        name: user.name,
+        color: user.color,
+      });
+    }
+  }, [user, provider]);
+
+  useEffect(() => {
+    // let quill: ReturnType<ReactQuill["getEditor"]>;
+    // let binding: QuillBinding;
 
     if (!reactQuillRef.current) {
       return;
     }
 
-    quill = reactQuillRef.current.getEditor();
-    binding = new QuillBinding(yText, quill, provider.awareness);
+    const quill = reactQuillRef.current.getEditor();
+    const cursors = quill.getModule("cursors");
+    const binding = new QuillBinding(yText, quill, provider.awareness);
+
+    // Update awareness on cursor change
+    quill.on("selection-change", (range) => {
+      if (range) {
+        provider.awareness.setLocalStateField("cursor", {
+          index: range.index,
+          length: range.length,
+        });
+      }
+    });
+
+    // Render remote users' cursors
+    const handleAwarenessChange = () => {
+      const states = provider.awareness.getStates();
+      const myClientID = provider.awareness.clientID;
+
+      cursors.clearCursors();
+
+      states.forEach((state: any, clientID: number) => {
+        if (clientID === myClientID) return;
+
+        const { user, cursor } = state;
+        if (user && cursor) {
+          cursors.createCursor(clientID.toString(), user.name, user.color);
+          cursors.moveCursor(clientID.toString(), cursor);
+        }
+      });
+    };
+
+    provider.awareness.on("change", handleAwarenessChange);
+
     return () => {
-      binding?.destroy?.();
+      binding.destroy();
+      provider.awareness.off("change", handleAwarenessChange);
     };
     
   }, [yText, provider]);
@@ -98,6 +153,7 @@ function QuillEditor({ yText, provider }: EditorProps) {
         ref={reactQuillRef}
         theme="snow"
         modules={{
+          cursors: true,
           toolbar: false,
           history: { userOnly: true },
         }}

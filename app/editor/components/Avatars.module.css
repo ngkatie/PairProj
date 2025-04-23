@@ -31,8 +31,23 @@
     white-space: nowrap;
   }
   
-  .avatar:hover:before {
-    opacity: 1;
+  .tooltip {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    bottom: 100%; /* Position above the avatar */
+    left: 50%;
+    transform: translateX(-50%);
+    transition: opacity 0.3s ease;
+  }
+  
+  /* Show tooltip on hover */
+  .avatar:hover .tooltip {
+    display: block;
   }
   
   .avatar_picture {

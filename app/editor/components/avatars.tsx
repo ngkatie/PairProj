@@ -36,9 +36,12 @@ export function Avatar({ name }: AvatarProps) {
             <div
                 className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-lg"
                 style={{ backgroundColor }}  // Apply the generated color
-                data-tooltip={name}  // Tooltip to show the user's full name
             >
-                {initial}
+              {initial}
+            </div>
+            {/* Tooltip */}
+            <div className={`${styles.tooltip} absolute bottom-12 left-1/2 transform -translate-x-1/2`}>
+                {name}
             </div>
         </div>
     );
