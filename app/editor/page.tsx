@@ -10,6 +10,8 @@ import Git from "./components/github.tsx";
 import Key from "./components/key.tsx";
 import File_Upload from "./components/file_uploader.tsx";
 import { useState } from "react";
+import { RoomProvider } from "../../liveblocks.config.ts";
+import { Avatars } from "./components/avatars.tsx";
 //import React, { useState } from 'react';
 import {
 	Card,
@@ -33,11 +35,15 @@ export default function Page() {
   }
   return (
     <div className="grid grid-cols-12 min-h-screen" suppressHydrationWarning>
-                <div className="col-span-3 bg-gray-200 dark:bg-zinc-900 text-black dark:text-white w-full flex-none justify-center">
-                    <Header />
-                    <ThemeToggle />
-                </div>
-                <div className="col-span-6 bg-white dark:bg-black text-black dark:text-white w-full flex-none justify-center p-6">
+        <div className="col-span-3 bg-gray-200 dark:bg-zinc-900 text-black dark:text-white w-full p-4 flex flex-col gap-6">
+          <Header />
+          <div className="mt-16 flex flex-col gap-2">
+            <CardTitle className="text-xl mb-2">Upload a File</CardTitle>
+            <File_Upload sendDataToParent={handleDataFromChild} />
+          </div>
+          <ThemeToggle />
+        </div>
+                <div className="col-span-6 bg-white dark:bg-black text-black dark:text-white w-full p-6">
                   <Room roomId={roomId}>
                   <div className="flex justify-between items-center p-4">
                     <h1 className="text-xl font-bold">Live Editor</h1>
@@ -46,9 +52,9 @@ export default function Page() {
                     <CollaborativeEditor data={fileData}/>
                   </Room>
                 </div>
-                <div className="col-span-3 bg-gray-200 dark:bg-zinc-900 text-black dark:text-white w-full flex-none justify-center">
-                  <CardTitle className="text-2xl">Upload a File</CardTitle>
-                  <File_Upload sendDataToParent={handleDataFromChild}/>
+                <div className="col-span-3 bg-gray-200 dark:bg-zinc-900 text-black dark:text-white w-full p-4 flex flex-col items-start gap-4">
+                  <h1 className="text-2xl font-bold">Active Users</h1>
+                  <Avatars />
                 </div>
             </div>
   );
